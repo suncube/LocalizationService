@@ -1,7 +1,7 @@
 #Localization Service <br>
 https://www.assetstore.unity3d.com/en/#!/content/50442<br>
 
-<a href = "https://docs.google.com/document/d/1mdOK2sEpuAtQ2RELRNmWkHynoF39YYoWCYMkHW-A2hs/edit?usp=sharing"> [Tutorial]  </a><br><br>
+<a href = "https://docs.google.com/document/d/1V2SNGZ09C2vN8lBXGJSKonXQCUmlcAyev5UoodWeohU/edit?usp=sharing"> [Tutorial]  </a><br><br>
 
 This package is designed to show the localization of text in your applications. <br>
 - simple integration interface<br>
