@@ -7,8 +7,8 @@ namespace SunCubeStudio.Localization
     [CustomEditor(typeof(UILocalization))]
     public class UILocalizationEditor : Editor
     {
-        private readonly int lineHeight = 20;
-        private bool lanquageFoldot =false;
+        //private readonly int lineHeight = 20;
+        //private bool lanquageFoldot =false;
         private int intPopup = 0;
         public override void OnInspectorGUI()
         {
@@ -47,24 +47,24 @@ namespace SunCubeStudio.Localization
         }
         private void ShowLocalizeValues(UILocalization myTarget)
         {
-            EditorGUILayout.Space();
-            lanquageFoldot = EditorGUILayout.Foldout(lanquageFoldot, "View Localization Values ");
-            var dictionary = LocalizationService.GetLocalizationsByKey(myTarget.Key);
-            if (dictionary != null)
-            {
-                foreach (var loc in dictionary)
-                {
-                    if (!lanquageFoldot) continue;
-                    if (string.IsNullOrEmpty(loc.Value))
-                        EditorGUILayout.TextField(loc.Key,"NOT FOUND");
-                    else
-                        EditorGUILayout.TextField(loc.Key, loc.Value);
-                }
-            }
-            else
-            {
-                EditorGUILayout.HelpBox("CSV Localization File not set. Check path to file " + LocalizationService.LocalizationFilePath+"", MessageType.Error);
-            }
+            //EditorGUILayout.Space();
+            //lanquageFoldot = EditorGUILayout.Foldout(lanquageFoldot, "View Localization Values ");
+            //var dictionary = LocalizationService.GetLocalizationsByKey(myTarget.Key);
+            //if (dictionary != null)
+            //{
+            //    foreach (var loc in dictionary)
+            //    {
+            //        if (!lanquageFoldot) continue;
+            //        if (string.IsNullOrEmpty(loc.Value))
+            //            EditorGUILayout.TextField(loc.Key,"NOT FOUND");
+            //        else
+            //            EditorGUILayout.TextField(loc.Key, loc.Value);
+            //    }
+            //}
+            //else
+            //{
+            //    EditorGUILayout.HelpBox("CSV Localization File not set. Check path to file " + LocalizationService.LocalizationFilePath+"", MessageType.Error);
+            //}
         }
         private int GetIdByKey(string key,string[] keys)
         {
