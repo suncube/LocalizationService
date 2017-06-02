@@ -1,0 +1,8 @@
+Id,French
+title,Service de Localisation
+text,"Ce forfait est conçu pour montrer la localisation de texte dans vos applications. Interface simple. Texte de localisation situé dans le format de fichier .csv. Fonctionne avec plusieurs types possibles de sortie de texte dans Unity(MeshText et UIText), on a aussi la possibilité d'obtenir la valeur de texte du code."
+shorttext,Ce forfait est conçu pour montrer la localisation de texte...
+autors,Sun Cube
+localization1,Anglaise
+localization2,Russe
+localization3,Français

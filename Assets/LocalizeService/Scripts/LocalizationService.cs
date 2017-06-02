@@ -74,7 +74,7 @@ public class LocalizationService : MonoSingleton<LocalizationService>
 
         string keyValue;
         if (localizationLibrary.TryGetValue(key, out keyValue))
-        {
+        { 
             return keyValue;
         }
 

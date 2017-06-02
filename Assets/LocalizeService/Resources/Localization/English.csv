@@ -1,0 +1,8 @@
+Id,English
+title,Localization\n Service
+text,"This package is designed to show the localization of text in your applications. Simple interface. Text of localization located in the .CSV file format. Works with several possible types of text output in Unity(MeshText and UIText), there is also has the opportunity to get text value of the code."
+shorttext,This package is designed to show the localization of text...
+autors,Sun Cube
+localization1,English
+localization2,Russian
+localization3,French
