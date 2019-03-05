@@ -1,94 +1,102 @@
 ﻿using System;
 using UnityEngine;
-using UnityEngine.UI;
 
-namespace SunCubeStudio.Localization
+namespace Localization
 {
+	public enum TextType
+	{
+		None,
+		UiText,
+		MeshText,
+		TextMeshPro,
+	}
+
+
     public class UILocalization : MonoBehaviour
     {
-        public string _key;
+        protected TextObject _textObject;
 
-        public string Key
-        {
-            get { return _key; }
-            set
-            {
-                _key = value;
-                Localize();
-            }
-        }
-
-        private Text UiText;
-        private TextMesh MeshText;
+		public string Key;
 
         #region Localize Logic
-        private void Start()
-        {
-            Initialize();
-        }
-        private void Initialize()
-        {
-            LocalizationService.Instance.OnChangeLocalization += OnChangeLocalization;
-            UiText = gameObject.GetComponent<Text>();
-            MeshText = gameObject.GetComponent<TextMesh>();
 
+#if UNITY_EDITOR
+        public void SetEditorValue(string text)
+        {
+            text = ParceText(text);
+            if (_textObject != null)
+            {
+                _textObject.Text = text;
+            }
+        }
+#endif
+        private void Start()
+		{
+		    Initialize();
             OnChangeLocalization();
         }
+
+        protected virtual void Initialize()
+        {
+            LocalizationService.Instance.OnChangeLocalization += OnChangeLocalization;
+
+			_textObject = new TextObject(gameObject);
+        }
+
         private void OnChangeLocalization()
         {
             Localize();
         }
-        private void Localize()
+
+        public virtual void Localize()
         {
-            SetTextValue(LocalizationService.Instance.GetTextByKey(_key));
+			if(LocalizationService.IsLive && _textObject != null)
+				SetTextValue(LocalizationService.Instance.GetTextByKey(Key));
         }
-        private void SetTextValue(string text)
+
+        protected void SetTextValue(string text)
         {
-            text = ParceText(text);
-
-            if (UiText != null)
-                UiText.text = text;
-
-            if (MeshText != null)
-                MeshText.text = text;
-
-            // error check
-            if (text == "[EMPTY]" || text == string.Format("[ERROR KEY {0}]", _key))
-            {
-
-                if (UiText != null)
-                {
-                    UiText.color = Color.red;
-                }
-                if (MeshText != null)
-                {
-                    MeshText.color = Color.red;
-                }
-            }
-
+	        _textObject.Text = ParceText(text); 
         }
 
         private string ParceText(string text)
         {
-            if (string.IsNullOrEmpty(text))
-                return string.Empty;
-
-            return text.Replace("\\n", Environment.NewLine); 
+            return text.ParceNewLine();
         }
 
         private void OnDestroy()
         {
-            LocalizationService.Instance.OnChangeLocalization -= OnChangeLocalization;
+			if(_textObject != null)
+				_textObject.Delete();
+
+	        _textObject = null;
+
+			if (!LocalizationService.IsLive) return;
+
+			LocalizationService.Instance.OnChangeLocalization -= OnChangeLocalization;
         }
         #endregion Localize Logic
 
         #region Helpers
-        public bool IsHasOutputHelper()
+
+		public TextType InitializeTextObject()
+		{
+			if(_textObject == null)
+				_textObject = new TextObject(gameObject);
+
+			return GetTextType();
+		}
+
+		public TextType GetTextType()
         {
-            UiText = gameObject.GetComponent<Text>();
-            MeshText = gameObject.GetComponent<TextMesh>();
-          return  UiText != null || MeshText != null;
-        }
-        #endregion Helpers
-    }
+			return _textObject.TextType;
+		}
+
+	    public bool IsHasTextObject()
+	    {
+		    return _textObject != null;
+	    }
+
+	    #endregion Helpers
+	}
 }

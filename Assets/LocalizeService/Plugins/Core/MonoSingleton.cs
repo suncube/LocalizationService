@@ -2,7 +2,6 @@
 
 public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 {
-
 	private static T s_Instance;
 	private static bool s_IsDestroyed;
 
@@ -32,15 +31,15 @@ public class MonoSingleton<T> : MonoBehaviour where T : MonoBehaviour
 
 	protected virtual void OnDestroy()
 	{
-		if (s_Instance)
-			Destroy(s_Instance);
-
 		s_Instance = null;
 		s_IsDestroyed = true;
+
+		if (s_Instance)
+			Destroy(s_Instance);
 	}
 
-	public bool IsLive()
+	public static bool IsLive
 	{
-		return s_IsDestroyed;
+		get { return !s_IsDestroyed; }
 	}
 }
