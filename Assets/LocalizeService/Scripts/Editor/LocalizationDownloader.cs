@@ -13,7 +13,6 @@ namespace Localization
 {
 	public class LocalizationDownloader : EditorWindow
 	{
-
 		[MenuItem("Window/Localization/Downloader")]
 		private static void ShowWindow()
 		{
@@ -27,7 +26,7 @@ namespace Localization
 		private static string ACCESS_TOKEN = "";
 		private static string REFRESH_TOKEN = "";
 
-		// google application settings
+		// Google Application settings
 		private static string CLIENT_ID = "35584708058-glpfem3u6unhf8d4k8gq20gtleo54m7a.apps.googleusercontent.com";
 		static string CLIENT_SECRET = "sh8wUKb9uoYv8Cchs0iLfRiH";
 		private static string SCOPE = "https://spreadsheets.google.com/feeds";
@@ -61,32 +60,34 @@ namespace Localization
 		private SpreadsheetFeed spreadsheetFeed;
 		private int localizationCount = 0;
 
-		// 
-		[SerializeField] private string accessCode = "";
+        // 
+	    private const string SettingName = "DownloaderSettings";
+        private const string SettingPath = "Assets/LocalizeService/Resources/Localization/{0}.asset";
+	    private DownloaderSettings settings;
+        private List<string> wantedSheetNames = new List<string>();
 
-		[SerializeField] private string spreadSheetKey = "";
-
-		[SerializeField] private List<string> wantedSheetNames = new List<string>();
-
-		[SerializeField] private string outputDir = "./Assets/LocalizeService/Resources/Localization";
-
-		// Draw Window
 		private void OnGUI()
 		{
-			titleContent.text = "Downloader";
+		    if (settings == null)
+		    {
+                Close();
+      
+		    }
+
+		    titleContent.text = "Downloader";
 			scrollPosition = EditorGUILayout.BeginScrollView(scrollPosition, GUI.skin.scrollView);
 
 			GUILayout.BeginVertical();
 			{
 				GUILayout.Label("Settings", EditorStyles.boldLabel);
 
-				spreadSheetKey = EditorGUILayout.TextField("Spread sheet key", spreadSheetKey);
-				outputDir = EditorGUILayout.TextField("Path to loacalization files", outputDir);
+			    settings.spreadSheetKey = EditorGUILayout.TextField("Spread sheet key", settings.spreadSheetKey);
+			    settings.loadingDir = EditorGUILayout.TextField("Path to loacalization files", settings.loadingDir);
 
 				if (IsTokkenEmpty)
 				{
 					GUILayout.BeginHorizontal();
-					accessCode = EditorGUILayout.TextField("Access code", accessCode);
+				    settings.accessCode = EditorGUILayout.TextField("Access code", settings.accessCode);
 					GUI.backgroundColor = Color.green;
 					if (GUILayout.Button("SET", EditorStyles.toolbarButton, GUILayout.Width(50)))
 					{
@@ -100,7 +101,7 @@ namespace Localization
 				}
 
 				GUI.backgroundColor = Color.white;
-				accessCode = EditorGUILayout.TextField("Access code", accessCode);
+			    settings.accessCode = EditorGUILayout.TextField("Access code", settings.accessCode);
 				GUILayout.Label("");
 				GUILayout.Label("Localizations:", EditorStyles.boldLabel);
 
@@ -188,27 +189,38 @@ namespace Localization
 			progress = 100;
 			progressMessage = "";
 
-			accessCode = PlayerPrefs.GetString(PREF_ACCESS_CODE, "");
-			spreadSheetKey = PlayerPrefs.GetString(PREF_SHEET_KEY, "");
-
-			ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
+		    LoadSettings();
+            
+            ServicePointManager.ServerCertificateValidationCallback = MyRemoteCertificateValidationCallback;
 		}
 
-		private bool IsTokkenEmpty
+        private void LoadSettings()
+	    {
+	        settings = Resources.Load<DownloaderSettings>(SettingName);
+            if (settings == null)
+            {
+                settings = CreateInstance<DownloaderSettings>();
+                AssetDatabase.CreateAsset(settings, string.Format(SettingPath,SettingName));
+                AssetDatabase.SaveAssets();
+                AssetDatabase.Refresh();
+            }
+        }
+
+	    private bool IsTokkenEmpty
 		{
 			get { return (ACCESS_TOKEN == "" && REFRESH_TOKEN == ""); }
 		}
 
 		private void GetLocalizationList()
 		{
-			//Validate input
-			if (string.IsNullOrEmpty(spreadSheetKey))
+
+			if (string.IsNullOrEmpty(settings.spreadSheetKey))
 			{
 				Debug.LogError("spreadSheetKey can not be null!");
 				return;
 			}
 
-			PlayerPrefs.SetString(PREF_SHEET_KEY, spreadSheetKey);
+			PlayerPrefs.SetString(PREF_SHEET_KEY, settings.spreadSheetKey);
 			PlayerPrefs.Save();
 
 			if (IsTokkenEmpty)
@@ -218,15 +230,13 @@ namespace Localization
 				return;
 			}
 
-			//Authenticate
 			progressMessage = "Authenticating...";
 			GOAuth2RequestFactory requestFactory = RefreshAuthenticate();
 			SpreadsheetsService service = new SpreadsheetsService(appName);
 			service.RequestFactory = requestFactory;
 
-			//Get the list of spreadsheets by the key
 			SpreadsheetQuery query = new SpreadsheetQuery();
-			query.Uri = new System.Uri(urlRoot + spreadSheetKey);
+			query.Uri = new System.Uri(urlRoot + settings.spreadSheetKey);
 			progressMessage = "Get list of spreadsheets...";
 
 			spreadsheetFeed = service.Query(query);
@@ -242,7 +252,6 @@ namespace Localization
 			WorksheetQuery sheetsQuery = new WorksheetQuery(link.HRef.ToString());
 			WorksheetFeed sheetsFeed = service.Query(sheetsQuery);
 
-			//For each sheet in received data, check the sheet name. If that sheet is the wanted sheet, create a json file
 			foreach (WorksheetEntry sheet in sheetsFeed.Entries)
 			{
 				wantedSheetNames.Add(sheet.Title.Text);
@@ -252,14 +261,13 @@ namespace Localization
 
 		private void DownloadLocalizationToCsv()
 		{
-			//Validate input
-			if (string.IsNullOrEmpty(spreadSheetKey))
+			if (string.IsNullOrEmpty(settings.spreadSheetKey))
 			{
 				Debug.LogError("spreadSheetKey can not be null!");
 				return;
 			}
 
-			PlayerPrefs.SetString(PREF_SHEET_KEY, spreadSheetKey);
+			PlayerPrefs.SetString(PREF_SHEET_KEY, settings.spreadSheetKey);
 			PlayerPrefs.Save();
 
 			if (IsTokkenEmpty)
@@ -269,7 +277,6 @@ namespace Localization
 				return;
 			}
 
-			//Authenticate
 			progressMessage = "Authenticating...";
 			GOAuth2RequestFactory requestFactory = RefreshAuthenticate();
 			SpreadsheetsService service = new SpreadsheetsService(appName);
@@ -277,9 +284,9 @@ namespace Localization
 
 			progress = 5;
 			EditorUtility.DisplayCancelableProgressBar("Processing", progressMessage, progress/100);
-			//Get the list of spreadsheets by the key
+	
 			SpreadsheetQuery query = new SpreadsheetQuery();
-			query.Uri = new System.Uri(urlRoot + spreadSheetKey);
+			query.Uri = new System.Uri(urlRoot + settings.spreadSheetKey);
 			progressMessage = "Get list of spreadsheets...";
 
 			EditorUtility.DisplayCancelableProgressBar("Processing", progressMessage, progress/100);
@@ -301,20 +308,19 @@ namespace Localization
 			WorksheetFeed sheetsFeed = service.Query(sheetsQuery);
 			progress = 15;
 
-			//For each sheet in received data, check the sheet name. If that sheet is the wanted sheet, create a json file
+			
 			foreach (WorksheetEntry sheet in sheetsFeed.Entries)
 			{
 				if ((wantedSheetNames.Count <= 0) || (wantedSheetNames.Contains(sheet.Title.Text)))
 				{
 					progressMessage = string.Format("Processing {0}...", sheet.Title.Text);
 					EditorUtility.DisplayCancelableProgressBar("Processing", progressMessage, progress/100);
-					//Get all cell data in sheet
+
 					AtomLink cellsLink = sheet.Links.FindService(GDataSpreadsheetsNameTable.CellRel, null);
 					CellQuery cellsQuery = new CellQuery(cellsLink.HRef.ToString());
 					CellFeed cellsFeed = service.Query(cellsQuery);
 
-					//Create json file
-					CreateCSVFile(sheet.Title.Text, outputDir, cellsFeed.Entries);
+					CreateCSVFile(sheet.Title.Text, settings.loadingDir, cellsFeed.Entries);
 					if (wantedSheetNames.Count <= 0)
 						progress += 85/(sheetsFeed.Entries.Count);
 					else
@@ -366,10 +372,9 @@ namespace Localization
 			}
 		}
 
-		// Authenticating...
 		void GetAccessCode(bool withDownload = true)
 		{
-			// OAuth2Parameters holds all the parameters related to OAuth 2.0.
+			// OAuth 2.0.
 			OAuth2Parameters parameters = new OAuth2Parameters();
 
 			parameters.ClientId = CLIENT_ID;
@@ -378,14 +383,11 @@ namespace Localization
 
 			parameters.RedirectUri = REDIRECT_URI;
 
-			// Get the Authorization URL
 			parameters.Scope = SCOPE;
 
-			parameters.AccessType = "offline"; // IMPORTANT and was missing in the original
+			parameters.AccessType = "offline"; 
 
-			parameters.TokenType = TOKEN_TYPE; // IMPORTANT and was missing in the original
-
-			// Authorization url.
+			parameters.TokenType = TOKEN_TYPE;
 
 			string authorizationUrl = OAuthUtil.CreateOAuth2AuthorizationUrl(parameters);
 			Debug.Log(authorizationUrl);
@@ -393,7 +395,7 @@ namespace Localization
 			          + "request token.  Once that is complete, type in your access code to "
 			          + "continue...");
 
-			parameters.AccessCode = accessCode;
+			parameters.AccessCode = settings.accessCode;
 
 			if (parameters.AccessCode == "")
 			{
@@ -405,7 +407,6 @@ namespace Localization
 
 			Debug.Log("Get access token.");
 
-			// Get the Access Token
 			try
 			{
 				OAuthUtil.GetAccessToken(parameters);
@@ -415,7 +416,7 @@ namespace Localization
 				ACCESS_TOKEN = accessToken;
 				Debug.Log("OAuth Refresh Token: " + refreshToken + "\n");
 				REFRESH_TOKEN = refreshToken;
-				PlayerPrefs.SetString(PREF_ACCESS_CODE, accessCode);
+				PlayerPrefs.SetString(PREF_ACCESS_CODE, settings.accessCode);
 				PlayerPrefs.Save();
 
 				if (withDownload)
