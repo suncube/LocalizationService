@@ -60,9 +60,6 @@ namespace Localization
 		private SpreadsheetFeed spreadsheetFeed;
 		private int localizationCount = 0;
 
-        // 
-	    private const string SettingName = "DownloaderSettings";
-        private const string SettingPath = "Assets/LocalizeService/Resources/Localization/{0}.asset";
 	    private DownloaderSettings settings;
         private List<string> wantedSheetNames = new List<string>();
 
@@ -92,7 +89,10 @@ namespace Localization
 					if (GUILayout.Button("SET", EditorStyles.toolbarButton, GUILayout.Width(50)))
 					{
 						GetAccessCode(false);
-					}
+
+					    if (settings != null)
+					        settings.Save();
+                    }
 					GUILayout.EndHorizontal();
 
 					GUILayout.EndVertical();
@@ -195,16 +195,15 @@ namespace Localization
 		}
 
         private void LoadSettings()
-	    {
-	        settings = Resources.Load<DownloaderSettings>(SettingName);
-            if (settings == null)
-            {
-                settings = CreateInstance<DownloaderSettings>();
-                AssetDatabase.CreateAsset(settings, string.Format(SettingPath,SettingName));
-                AssetDatabase.SaveAssets();
-                AssetDatabase.Refresh();
-            }
+        {
+            settings = DownloaderSettings.Load();
         }
+
+	    private void OnDestroy()
+	    {
+	        if (settings != null)
+	            settings.Save();
+	    }
 
 	    private bool IsTokkenEmpty
 		{
