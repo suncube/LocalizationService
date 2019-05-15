@@ -18,15 +18,13 @@ Support [suncubestudio@gmail.com](mailto:suncubestudio@gmail.com) - subject of m
 # Create files of localization
 Plugin use .CSV files for localization key/value. Create a table of localization and export it to a .CSV file. You can use for this google sheets, because all your team can edit this with sync.
 
- 
-![](http://drive.google.com/uc?export=view&id=1CfFUej_LybuFx4-tnbTyCU54QY4FWXQY)
+ ![](/ReadmeSource/preview1.png)
 
 
 
 Create for each language its own list.
 
-
-![](http://drive.google.com/uc?export=view&id=1jWXRVy1RTz7Khs7SSw_mK3TyxN12uDTq)
+![](/ReadmeSource/preview2.png)
 
 
   
@@ -46,7 +44,7 @@ This tool can be opened by path **Window / Localization**
 
   
 
-![](http://drive.google.com/uc?export=view&id=1POMWHWgCvuSZvqwhITahqMk166ubpxnT)
+![](/ReadmeSource/preview3.png)
 
 
   
@@ -54,7 +52,7 @@ This tool can be opened by path **Window / Localization**
 
 Next - open your localization page and copy google sheet **IDKey**
 
-![](http://drive.google.com/uc?export=view&id=1THMj9Ik3dd8090Mm--JYQCE9Gjdwg75z)
+![](/ReadmeSource/preview4.png)
 
   
   
@@ -63,7 +61,7 @@ Copy and paste this to **SpreadSheetKey** :
 
   
 
-![](http://drive.google.com/uc?export=view&id=1OqQgV9LJDJRET0nx_AoNcjAmt1hKuPTu)
+![](/ReadmeSource/preview5.png)
 
 > Check the path to localization files will be downloaded. (! it must be
 > a folder **../Resources/Localization**)
@@ -72,22 +70,22 @@ Press **SET** button
 
   
 
-![](http://drive.google.com/uc?export=view&id=1ZKfUweYaLstRGGvfaM3p4-s5GlLoRgW-)
+![](/ReadmeSource/preview6.png)
 
 
   
 
 Get session key (this case will be repeated if the key is expired or invalid)
 
-![](http://drive.google.com/uc?export=view&id=1UNcmosdPSbhPFGGNd_68fW275Y24O1dH)
+![](/ReadmeSource/preview7.png)
 
 Copy and paste this to **AccessCode** field:
 
-![](http://drive.google.com/uc?export=view&id=1_y4Voz3iJ0s3po1t_qVrMM6SVTTXKoPl)
+![](/ReadmeSource/preview8.png)
 
 Press **SET** button
   
-![](http://drive.google.com/uc?export=view&id=1ZKfUweYaLstRGGvfaM3p4-s5GlLoRgW-)
+![](/ReadmeSource/preview9.png)
 
   
 
@@ -95,14 +93,13 @@ Now you need to get list of localization , press GET LIST
 
   
 
-![](http://drive.google.com/uc?export=view&id=1NLN-WXNafcUsTT6Qs49C4059VFzYEljw)
+![](/ReadmeSource/preview10.png)
 
   
 
 A list of localizations will shown like:
 
-![](http://drive.google.com/uc?export=view&id=1BkARwFRQF5YOsogp-z2noe7Fxh2rZoiA)
-
+![](/ReadmeSource/preview11.png)
   
 
 1.  List can be updated
@@ -124,30 +121,26 @@ A list of localizations will shown like:
     
  
 
-![](http://drive.google.com/uc?export=view&id=138CDoGSe2fUmX4ULj5yIBtAY76NaWsss)
-
+![](/ReadmeSource/preview12.png)
   
 
 If the entered key does not exist you will get an **error**. Check that the key in the localization!
 
   
 
-![](http://drive.google.com/uc?export=view&id=1TLBkYY4qqygXIa-8QxKd95pDTzSs09Il)
-
+![](/ReadmeSource/preview13.png)
   
 
 New version include ability to **localize multikey**. This is very useful when you using tags.
 
   
 
-![](http://drive.google.com/uc?export=view&id=1ujBIw4QAHTqNQpV-9uCrgnC34Lwqmsmp)
-
+![](/ReadmeSource/preview14.png)
   
 
 You need enter the keys for each **id** {0...N}
 
-![](http://drive.google.com/uc?export=view&id=1sQtiYGgRZ7UH1fs1nzyV7Cew5T6ec6HN)
-
+![](/ReadmeSource/preview15.png)
   
   
 
@@ -207,9 +200,10 @@ Path to open **Window / Localization / Analytic keys**
 This tool will allow you to analyze all keys that are used in the project (!Before starting you need save all changes in the current scene)
 
 Press **"Find Use"**
-![](http://drive.google.com/uc?export=view&id=1eLY5IMKBuoQLQlw44PdLBKy7Rd84zTj0)
 
-![](http://drive.google.com/uc?export=view&id=1IybG15ecxqNC1mqy_YE8g_cdq5F--Efa)
+![](/ReadmeSource/preview16.png)
+
+![](/ReadmeSource/preview17.png)
 
   
 
@@ -219,7 +213,7 @@ Press **"Find Use"**
     
 3.  Places where there are errors when using
    
-   ![](http://drive.google.com/uc?export=view&id=1M3gDBS_wrS8dbfZOciFtf2AsTQz96l2C)
+   ![](/ReadmeSource/preview18.png)
  
 
 >**Errors Types:**
@@ -234,4 +228,4 @@ Press **"Find Use"**
     
 >! Does not check usage in the code of the project like LocalizationService.Instance.GetTextByKey("localization1")
 
-![](http://drive.google.com/uc?export=view&id=1TEZSxNZTKiiImsffA6yf-qxEhnvF9fYh)
+![](/ReadmeSource/preview19.png)
