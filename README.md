@@ -1,6 +1,6 @@
 
 
-# Localization Service 
+# Localization Service ![GitHub release](https://img.shields.io/github/release/suncube/LocalizationService.svg)
 
 Plugin for localization keys. Works with **MeshText/UIText/TextMeshPro** 
 
@@ -229,3 +229,13 @@ Press **"Find Use"**
 >! Does not check usage in the code of the project like LocalizationService.Instance.GetTextByKey("localization1")
 
 ![](/ReadmeSource/preview19.png)
+
+#
+
+[![Patreon](https://img.shields.io/badge/donate-Patreon-orange.svg)](https://www.patreon.com/suncube)
+[![Twitter](https://img.shields.io/badge/follow-Twitter-9cf.svg)](https://twitter.com/suncubestudio)
+[![Facebook](https://img.shields.io/badge/follow-Facebook-blue.svg)](https://www.facebook.com/suncubestudio/)
+[![YouTube](https://img.shields.io/badge/follow-YouTube-red.svg)](https://www.youtube.com/channel/UC4O9GHjx0ovyVYJgMg4aFMA?view_as=subscriber)
+[![AssetStore](https://img.shields.io/badge/-AssetStore-lightgrey.svg)](https://assetstore.unity.com/publishers/14506)
+
+[![Donate](https://www.paypalobjects.com/en_US/i/btn/btn_donateCC_LG.gif)](https://www.donationalerts.com/r/suncube)
